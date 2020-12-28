@@ -1,0 +1,47 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="MoDueler"
+run/main_scene="res://Scenes/Main.tscn"
+boot_splash/image="res://icon.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 1, 1, 1, 1 )
+config/icon="res://icon.png"
+
+[audio]
+
+default_bus_layout=""
+
+[debug]
+
+shapes/navigation/geometry_color=Color( 0.101961, 1, 0.701961, 0.4 )
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
+window/vsync/use_vsync=false
+
+[editor]
+
+main_run_args="--verbose"
+
+[physics]
+
+common/physics_fps=1
+common/enable_object_picking=false
+
+[rendering]
+
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+environment/default_clear_color=Color( 0, 0, 0, 1 )

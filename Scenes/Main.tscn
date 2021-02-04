@@ -25,7 +25,6 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 0.00012207
-margin_bottom = 1.61206
 mouse_filter = 2
 stretch = true
 __meta__ = {
@@ -33,7 +32,7 @@ __meta__ = {
 }
 
 [node name="SceneManager" type="Viewport" parent="GameLayer/SceneContainer"]
-size = Vector2( 1920, 1081 )
+size = Vector2( 1920, 1080 )
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 3

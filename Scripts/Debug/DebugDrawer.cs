@@ -44,6 +44,9 @@ namespace MoDueler.Debug {
         }
 
         public override void _Draw() {
+
+            // TODO: Ensure draw events are each still valid.
+
             // Draw something behind the text but in front of the scene for contrast.
             DrawPanel();
             DrawFPSCounter();

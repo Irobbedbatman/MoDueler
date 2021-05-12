@@ -120,6 +120,10 @@ namespace MoDueler.Nodes {
         /// </summary>
         public void DeselectCard() {
 
+            // Ensure a card is selected.
+            if (SelectedCard == null)
+                return;
+
             //Cards can't target other cards in the hand and need to excluded from the intersect check.
             //TODO: Don't create more arrays.
             Godot.Collections.Array exclude = new Godot.Collections.Array(HeldCards);
@@ -180,7 +184,7 @@ namespace MoDueler.Nodes {
                 // TODO: Another pesky godot array.
                 Godot.Collections.Array exclude = new Godot.Collections.Array(HeldCards);
                 // Draw a bone to the current object the mouse is pointing to.
-                var obj = CameraPointer.Instance.GetIntersectColliders(SelectedCard.Position, exclude).FirstOrDefault();
+                var obj = CameraPointer.Instance.GetIntersectColliders(pointa, exclude).FirstOrDefault();
                 if (obj != null)
                     Debug.DebugDrawing.DrawBone(pointa, obj.GlobalPosition, 5, new Color(1, .3f, .4f), new Color(1, 1, 1));
             };
@@ -229,7 +233,7 @@ namespace MoDueler.Nodes {
             HeldCards.Sort();
 
             float posI = -((HeldCards.Count - 1) / 2f);
-            foreach (var card in HeldCards) {
+            foreach (var card in HeldCards.ToArray()) {
                 // Get the angle to where the card would be.
                 float angle = tangent + (posI * CardSepertation);
 

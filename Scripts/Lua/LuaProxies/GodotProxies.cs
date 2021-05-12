@@ -2,7 +2,7 @@
 using MoonSharp.Interpreter;
 using System;
 
-namespace MoDueler.LuaProxies {
+namespace MoDueler.Lua.Proxies {
     public static class GodotProxies {
 
         public class ShaderProxy {

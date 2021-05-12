@@ -2,28 +2,27 @@
 using System.Threading.Tasks;
 using Godot;
 using MoDueler.Colors;
-using MoDueler.Nodes;
 using MoDueler.Resources;
+using MoDueler.Lua;
+using MoDueler.Backend;
+using MoDueler.Scripts.Duel.Connection;
 
-namespace MoDueler.Startup {
+namespace MoDueler.Nodes {
     
     /// <summary>
-    /// The screen that first shows and only show up when the program is run.
+    /// The screen that appears when the application is opened. Set in the Godot engine.
     /// </summary>
     public class SplashScreen : Node2D {
 
         public override void _Ready() {
 
             // Apply any stored or default settings.
-            SettingsSetup.ApplySettings();
+            GlobalSettings.ApplySettings();
             // Load anything we need from lua.
-            LuaSetup.SetupLua();
-
-            // Delay playing the BGM in case the AudioController hasn't setup yet.
-            Task.Delay(1000).ContinueWith((t) => {
-                Audio.AudioController.Instance.SetVolume(GlobalSettings.Volume);
-                Audio.AudioController.Instance.PlayBGM("bgm_opening.mp3", true);
-            });
+            ClientSideLua.SetupLua();
+            // Play opening music.
+            Audio.AudioController.Instance.SetVolume(GlobalSettings.Volume);
+            Audio.AudioController.Instance.PlayBGM("bgm_opening.mp3", true);
 
             // Create a background.
             var shader = GD.Load("res://Shaders/Background.shader") as Shader;
@@ -34,6 +33,22 @@ namespace MoDueler.Startup {
             sprite = SpriteCreator.CreateSprite("img", image: ResourceFiles.LoadImage("@logo_1tone.en_US.png"));
             AddChild(sprite);
 
+
+            Button toDuel = new Button();
+            toDuel.RectSize = new Vector2(200, 69);
+
+            toDuel.RectPosition = new Vector2(140, 140);
+
+            toDuel.Text = "Duel";
+            toDuel.Connect("pressed", this, "NewStart");
+            AddChild(toDuel);
+        }
+
+        public void NewStart() {
+            Scenes.SceneManager.ChangeScene(CreateLobby());
+        }
+
+        public void OldStart() {
             // Create a new button for opening the menu.
             var btn = SpriteButton.CreateButton("Continue", ResourceFiles.LoadImage("button_common.png"));
             var lbl = NodeRichTextLabel.CreateLabel("ContinueLabel", "Continue", FontResource.GetNewFont("*ui.ttf", 28, new Color(.7f, .7f, .7f)), btn.Size);
@@ -69,7 +84,7 @@ namespace MoDueler.Startup {
                 }
                 else
                     Audio.AudioController.Instance.PlaySFX("cancel.wav");
-                btn.Modulate = ConstantColors.White;             
+                btn.Modulate = ConstantColors.White;
             };
 
             // When a button is clicked we darkenen it and play a click sound.
@@ -95,8 +110,9 @@ namespace MoDueler.Startup {
             btn.OnReleased += btnReleased;
             duelbtn.OnPressed = continueAction4;
             duelbtn.OnReleased += continueAction3;
-
         }
+
+
 
         /// <summary>
         /// Creates a pretty barebones lobby.
@@ -136,7 +152,27 @@ namespace MoDueler.Startup {
             // If the button is released we can remove any darkening and if it was hovered we can move to the duel scene.
             btn.OnReleased = (hovered) => {
                 if (hovered) {
-                    Scenes.SceneManager.ChangeScene(new DuelMaster());
+                    DuelMaster master = new DuelMaster();
+                    Scenes.SceneManager.ChangeScene(master);
+
+                    DuelFlowSetup.SetupLoading();
+                    var env = DuelFlowSetup.SetupEnvironment();
+                    var player1 = DuelFlowSetup.CreatePlayer1(env);
+                    var player2 = DuelFlowSetup.CreatePlayer2(env);
+
+                    var flow = DuelFlowSetup.FlowStart(env, player1, player2);
+
+                    LocalGameProvider provider = new LocalGameProvider(flow, player1);
+                    AIPlayer ai = new AIPlayer(flow, player2, new MoDuel.Tools.ManagedRandom());
+                    System.Threading.Thread aiThread = new System.Threading.Thread(new System.Threading.ThreadStart(
+                        ai.ThreadStart
+                        ));
+                    master.SetProvider(provider);
+
+                    var thread = DuelFlowSetup.StartThread(flow, env, player1, player2);
+
+                    aiThread.Start();
+
                     // Play in Duel music.
                     Audio.AudioController.Instance.PlayBGM("bgm_duel.mp3", true);
                 }

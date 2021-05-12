@@ -8,6 +8,10 @@ namespace MoDueler.Scenes {
     /// </summary>
     public abstract class RefreshableViewport : Viewport {
 
+        private float blockTime;
+
+        private const float Delay = .25f;
+
         public override void _Ready() {
             Connect("size_changed", this, nameof(Refresh), null, (uint)ConnectFlags.Deferred);
         }

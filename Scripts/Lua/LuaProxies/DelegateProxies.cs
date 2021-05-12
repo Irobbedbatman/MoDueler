@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoDueler.LuaProxies {
+namespace MoDueler.Lua.Proxies {
     public static class DelegateProxies {
 
         public static void RegisterActionConverter() {

@@ -8,6 +8,7 @@ namespace MoDueler.Audio {
     /// <summary>
     /// Audio controller to play a single BGM <see cref="AudioStreamPlayer"/> and upto a set amount in MAX_SFX_PLAYERS of SFX <see cref="AudioStreamPlayer"/>s.
     /// </summary>
+    [MoonSharp.Interpreter.MoonSharpUserData]
     public class AudioController : Node {
 
         /// <summary>
@@ -15,7 +16,7 @@ namespace MoDueler.Audio {
         /// </summary>
         public const int SFX_BUS = 2;
         /// <summary>
-        /// The maximum amount of <see cref="AudioStreamPlayer"/> created fore use of sound effects.
+        /// The maximum amount of <see cref="AudioStreamPlayer"/> created for use of sound effects.
         /// TODO: Provide a more accurate number for a everyday player and/or make it variable instead of constant.
         /// </summary>
         public const int MAX_SFX_PLAYERS = 8;
@@ -96,7 +97,7 @@ namespace MoDueler.Audio {
         /// The signal response for when a <see cref="AudioStreamPlayer"/> has finished so it can be added to <see cref="PooledAudioStreams"/> for reuse.
         /// </summary>
         /// <param name="player">The player that provided the signal.</param>
-        private void PlayerFinised(AudioStreamPlayer player) => PooledAudioStreams.Enqueue(player);
+        private void PlayerFinished(AudioStreamPlayer player) => PooledAudioStreams.Enqueue(player);
 
         /// <summary>
         /// Get's a <see cref="AudioStreamPlayer"/> from the <see cref="PooledAudioStreams"/> or creates a new one.
@@ -117,7 +118,7 @@ namespace MoDueler.Audio {
             // Add it to the tree.
             SFXPool.AddChild(player);
             // Connect the finished signal to Player Finished so that we can tell when to return it to the pool.
-            player.Connect("finished", this, nameof(PlayerFinised), new Godot.Collections.Array { player });
+            player.Connect("finished", this, nameof(PlayerFinished), new Godot.Collections.Array { player });
             return player;
         }
 

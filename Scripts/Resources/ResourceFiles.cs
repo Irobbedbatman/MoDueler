@@ -75,14 +75,14 @@ namespace MoDueler.Resources {
 
         /// <summary>
         /// Looks for a file with the provided name (or key). 
-        /// TODO: Fasters searth method and other such ideas.
+        /// TODO: Fasters search method and other such ideas.
         /// <para>Returen <c>null</c> if no file was found.</para>
         /// </summary>
         public static string FindFile(string name) {
             //If the file's full path is provided we don't neeed to find it. Also would crash.
             if (System.IO.Path.IsPathRooted(name))
                 return name;
-            var files = System.IO.Directory.GetFiles(GlobalSettings.ResourceDirectory, name, System.IO.SearchOption.AllDirectories);
+            var files = System.IO.Directory.GetFiles(GlobalSettings.ContentDirectory, name, System.IO.SearchOption.AllDirectories);
             // We only care about the first file found.
             return files.Length > 0 ? files[0] : null;
         }

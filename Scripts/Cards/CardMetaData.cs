@@ -32,7 +32,7 @@ namespace MoDueler.Cards {
         /// <summary>
         /// The identifier for each unqiue card.
         /// </summary>
-        public string ID;
+        public string CardId;
 
         /// <summary>
         /// Is the base Card of this card a creature and should use card_is_creature shader param.
@@ -52,7 +52,7 @@ namespace MoDueler.Cards {
         public CardMetaData(uint index, string cardBase, string cardID, string manaType) {
             Index = index;
             CardBase = cardBase;
-            ID = cardID;
+            CardId = cardID;
             ManaType = manaType;
         }
 

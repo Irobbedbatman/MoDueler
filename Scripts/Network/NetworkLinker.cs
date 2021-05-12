@@ -10,17 +10,17 @@ namespace MoDueler.Network {
         /// <summary>
         /// Provides linking a unique uint to a object (usually a node) across the network.
         /// </summary>
-        private readonly Dictionary<uint, object> Refrences = new Dictionary<uint, object>();
+        private readonly Dictionary<int, object> Refrences = new Dictionary<int, object>();
 
         /// <summary>
         /// Provides the inverse of <see cref="Refrences"/> getting the unique identifier of a object if it has one.
         /// </summary>
-        private readonly Dictionary<object, uint> InverseRefrences = new Dictionary<object, uint>();
+        private readonly Dictionary<object, int> InverseRefrences = new Dictionary<object, int>();
 
         /// <summary>
         /// Adds a refrence and by extension it's inverse.
         /// </summary>
-        public void Refrence(uint id, object obj) {
+        public void Refrence(int id, object obj) {
             Refrences.Add(id, obj);
             InverseRefrences.Add(obj, id);
         }
@@ -28,17 +28,17 @@ namespace MoDueler.Network {
         /// <summary>
         /// Calls <see cref="Dictionary{TKey, TValue}.TryGetValue(TKey, out TValue)"/> on the refrences.
         /// </summary>
-        public bool TryGetRefrence(uint id, out object obj) => Refrences.TryGetValue(id, out obj);
+        public bool TryGetRefrence(int id, out object obj) => Refrences.TryGetValue(id, out obj);
 
         /// <summary>
         /// Calls <see cref="Dictionary{TKey, TValue}.TryGetValue(TKey, out TValue)"/> on the inverse refrences.
         /// </summary>
-        public bool TryGetID(object obj, out uint id) => InverseRefrences.TryGetValue(obj, out id);
+        public bool TryGetID(object obj, out int id) => InverseRefrences.TryGetValue(obj, out id);
 
         /// <summary>
         /// Returns a refrence if it exist otherwise it return null.
         /// </summary>
-        public object GetRefrence(uint id) {
+        public object GetRefrence(int id) {
             if (TryGetRefrence(id, out var result))
                 return result;
             else
@@ -48,11 +48,21 @@ namespace MoDueler.Network {
         /// <summary>
         /// Returns a inverse refrence if it exist otherwise it return null.
         /// </summary>
-        public uint? GetID(object obj) {
+        public int? GetID(object obj) {
             if (TryGetID(obj, out var result))
                 return result;
             else
                 return null;
+        }
+
+
+        public void Derefrence(object obj) {
+            var id = GetID(obj);
+            if (id == null)
+                return;
+            Refrences.Remove(id.Value);
+            InverseRefrences.Remove(obj);
+
         }
 
     }

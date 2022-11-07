@@ -27,15 +27,15 @@ namespace MoDueler.Debug {
         /// <summary>
         /// The font used for display any text debug information.
         /// </summary>
-        private FontResource font;
+        private Font font;
 
         public override void _Ready() {
             Instance = this;
             // Set the z index as high as possible.
-            VisualServer.CanvasItemSetZIndex(this.GetCanvasItem(), 4096);
+            VisualServer.CanvasItemSetZIndex(GetCanvasItem(), 4096);
             // Create the font.
-            font = FontResource.GetNewFont(GlobalSettings.FallbackFontName, 18, Colors.ConstantColors.White);
-
+            //font = FontResource.GetNewFont("NotoFallbackFont.otf", 18, ConstantColors.White);
+            font = GetFont("");
         }
 
         public override void _Process(float delta) {
@@ -44,7 +44,6 @@ namespace MoDueler.Debug {
         }
 
         public override void _Draw() {
-
             // TODO: Ensure draw events are each still valid.
 
             // Draw something behind the text but in front of the scene for contrast.
@@ -83,7 +82,8 @@ namespace MoDueler.Debug {
         public void DrawHovered() {
             var size = GetViewport().Size;
             Vector2 pos = new Vector2(8, size.y - 35);
-            DrawString(font, pos, "Hovered: " + Camera.CameraPointer.Instance?.TopHovered?.Name ?? "-");
+            DrawString(font, pos, "Hovered: " + Nodes.CameraPointer.Instance?.TopHovered?.Name ?? "-");
+            DrawString(font, pos + new Vector2(0, -20), "Position: " + Nodes.CameraPointer.Instance?.PointerPos ?? "-");
         }
 
         /// <summary>

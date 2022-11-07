@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.47451, 0.345098, 0.223529, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 1, 1, 1, 1 )
+border_blend = true
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+shadow_size = 5
+
+[node name="Button" type="Button"]
+self_modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1620.0
+margin_bottom = -1060.0
+rect_min_size = Vector2( 300, 150 )
+
+[node name="LobbyDuelEntry" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Label" type="Label" parent="LobbyDuelEntry"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "VS AI"
+align = 1
+valign = 1

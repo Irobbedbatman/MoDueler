@@ -31,8 +31,12 @@ namespace MoDueler.Resources {
             // Try to find the file with the given key.
             var path = ResourceFiles.FindFile(fontKey);
             // If the path wasn't found we use the fallback.
-            if (path == null)
+            if (path == null) {
+                // If the font key is already the fallback of course it can't be found.
+                if (fontKey == GlobalSettings.FallbackFontName)
+                    return null;
                 path = ResourceFiles.FindFile(GlobalSettings.FallbackFontName);
+            }
             // Load the data at the found path.
             DynamicFontData fontData = ResourceFiles.LoadFile(path) as DynamicFontData;
             // Apply hinting and antialiasing to the font data.
@@ -83,9 +87,13 @@ namespace MoDueler.Resources {
         /// Provides get/set methods for the font color.
         /// </summary>
         public Color Color {
-            get { return (Color)Get("custom_colors/font_color"); }
-            set { Set("custom_colors/font_color", value); }
+
+            // TODO: Correct get and set as this doesn't work without using meta values.
+
+            get { try { return (Color)GetMeta("custom_colors/font_color"); } catch { return new Color(1, 1, 1); } }
+            set { SetMeta("custom_colors/font_color", value); }
         }
+
 
     }
 }

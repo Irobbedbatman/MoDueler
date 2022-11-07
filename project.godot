@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="MoDueler"
-run/main_scene="res://Scenes/Main.tscn"
+run/main_scene="res://Scenes/Global.tscn"
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
@@ -24,6 +24,8 @@ default_bus_layout=""
 [autoload]
 
 AudioController="*res://Singletons/AudioController.tscn"
+Animator="*res://Singletons/Animator.tscn"
+UiLayer="*res://Singletons/UILayer.tscn"
 
 [debug]
 
@@ -34,6 +36,8 @@ shapes/navigation/geometry_color=Color( 0.101961, 1, 0.701961, 0.4 )
 window/size/width=1920
 window/size/height=1080
 window/vsync/use_vsync=false
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
 
 [editor]
 

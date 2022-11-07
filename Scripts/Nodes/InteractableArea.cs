@@ -1,9 +1,10 @@
 using Godot;
-using MoDueler.Camera;
+using MoonSharp.Interpreter;
 using System;
 
 
 namespace MoDueler.Nodes {
+
 
     /// <summary>
     /// An <see cref="Area2D"/> that <see cref="CameraPointer.Instance"/> can supply with click, release and hovered information.
@@ -32,6 +33,12 @@ namespace MoDueler.Nodes {
         /// <para>The Provided <c>bool</c> is the state of <see cref="IsHovered"/>.</para>
         /// </summary>
         public Action<bool> OnReleased;
+        /// <summary>
+        /// Invoked on a full click and release.
+        /// <para>Effective <see cref="OnReleased"/> when <c>true</c> is passed.</para>
+        /// </summary>
+        public Action OnClicked;
+
 
     }
 }

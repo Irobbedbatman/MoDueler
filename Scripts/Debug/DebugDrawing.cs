@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoDueler.Nodes;
 
 namespace MoDueler.Debug {
     public static class DebugDrawing {
@@ -16,7 +17,7 @@ namespace MoDueler.Debug {
         public static void DrawBone(Vector2 pointa, Vector2 pointb, int width, Color innerColor, Color outerColor) {
             var instance = DebugDrawer.Instance;
 
-            var zoom = Camera.CameraPointer.Instance.Zoom;
+            var zoom = CameraPointer.Instance.Zoom;
 
             instance.DrawLine(pointa / zoom + instance.DrawOffset, pointb / zoom + instance.DrawOffset, outerColor, width: width);
             instance.DrawLine(pointa / zoom + instance.DrawOffset, pointb / zoom + instance.DrawOffset, innerColor, width: width - 2);

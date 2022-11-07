@@ -179,7 +179,7 @@ namespace MoDueler.Audio {
         };
 
         /// <summary>
-        /// Creates a <see cref="AudioStreamOGGVorbis"/> from the provided bytes,
+        /// Creates a <see cref="AudioStreamOGGVorbis"/> from the provided bytes.
         /// </summary>
         private AudioStream LoadOgg(byte[] bytes, bool loop = false, float loopOffset = 0) => new AudioStreamOGGVorbis {
             Loop = loop,
@@ -188,7 +188,7 @@ namespace MoDueler.Audio {
         };
 
         /// <summary>
-        /// Read GDScriptAudioImport.gd for information I just converted it to C# and removed the simple documentation and printing.
+        /// Read GDScriptAudioImport.gd for information; I just converted it to C# and removed the simple documentation and printing.
         /// </summary>
         private AudioStream LoadWav(byte[] bytes) {
             var stream = new AudioStreamSample();
@@ -200,10 +200,10 @@ namespace MoDueler.Audio {
                 strBldr.Append((char)(bytes[i+3]));
                 string code = strBldr.ToString();
                 if (code == "fmt ") {
-                    var formatsubchunksize = bytes[i + 4] + (bytes[i + 5] << 8) + (bytes[i + 6] << 16) + (bytes[i + 7] << 32);
+                    //var formatsubchunksize = bytes[i + 4] + (bytes[i + 5] << 8) + (bytes[i + 6] << 16) + (bytes[i + 7] << 32);
                     var fsc0 = i + 8;
                     var format_code = bytes[fsc0] + (bytes[fsc0 + 1] << 8);
-                    AudioStreamSample.FormatEnum format = default;
+                    AudioStreamSample.FormatEnum format; //default;
                     switch (format_code) {
                         case 0:
                             format = AudioStreamSample.FormatEnum.Format8Bits;

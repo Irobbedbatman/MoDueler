@@ -1,22 +1,22 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scripts/Duel/DuelMaster.cs" type="Script" id=1]
-[ext_resource path="res://Scripts/Camera/CameraPointer.cs" type="Script" id=2]
-[ext_resource path="res://Scripts/Scenes/RefreshableViewport.cs" type="Script" id=3]
+[ext_resource path="res://Scripts/Nodes/Camera/CameraPointer.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Nodes/Duel/DuelMaster.cs" type="Script" id=2]
 
-[node name="Viewport" type="Viewport"]
+[node name="DuelMaster" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 1920, 1080 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
 render_target_update_mode = 3
-script = ExtResource( 3 )
 
 [node name="MainCamera" type="Camera2D" parent="."]
 z_index = 1000
 current = true
 editor_draw_limits = true
-script = ExtResource( 2 )
-
-[node name="DuelMaster" type="Node2D" parent="."]
 script = ExtResource( 1 )
+
+[node name="Scene" type="Node2D" parent="."]

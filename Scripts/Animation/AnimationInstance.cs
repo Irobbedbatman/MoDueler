@@ -18,12 +18,12 @@ namespace MoDueler.Animation {
         /// </summary>
         public readonly AnimationBasis Basis;
         /// <summary>
-        /// The node that will 
+        /// The node that the animation will be played on.
         /// </summary>
         public readonly Node RootNode;
 
         /// <summary>
-        /// All the <see cref="Transformations"/> on bones that need to be <see cref="Update(float)"/>d each time.
+        /// All the <see cref="Transformations"/> on bones that need to be <see cref="Advance(float)(float)"/>d each frame.
         /// </summary>
         private Action<float, float> AnimationComponents;
 
@@ -115,21 +115,21 @@ namespace MoDueler.Animation {
         }
 
         /// <summary>
-        /// Updates all the animations based on the change in time.
+        /// Advances the animation by a provided time in seconds.
         /// </summary>
-        /// <param name="deltaTime">Time since the last call to Update.</param>
+        /// <param name="time">The time in seconds to move forward.</param>
         /// <returns>True if the animation has finished.</returns>
-        public bool Update(float deltaTime) {
+        public bool Advance(float time) {
             // Record the value of time last update.
-            float previousTime = timeElapsed;
+            float previousTIme = timeElapsed;
             // Get the new time into the animation.
-            timeElapsed += deltaTime;
-            // Loop the animation by reseting the animation's time.
+            timeElapsed += time;
+            // Loop the animation by resetting the animation's time.
             if (Basis.Loop)
                 timeElapsed %= (float)Basis.Duration;
 
             // Perfrom animation tranformations provided to the animation instance.
-            AnimationComponents?.Invoke(previousTime, timeElapsed);
+            AnimationComponents?.Invoke(previousTIme, timeElapsed);
 
             // If the animation is still ongoing return false to indicate as such.
             if (timeElapsed < Basis.Duration)

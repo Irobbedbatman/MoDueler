@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 namespace MoDueler {
     public class GlobalSettings {
 
+        // TODO: Make settings a static class or a struct.
+
         public static JObject SettingsObject;
 
 
@@ -27,6 +29,16 @@ namespace MoDueler {
         public static string FallBackImageName = "FileNotFoundFallback.png";
 
 
+        /// <summary>
+        /// The address the game will be hosted on.
+        /// </summary>
+        public static string HostAddress;
+        /// <summary>
+        /// Thge port the host will use. Wether this is the hosted application or the application connecting to the host.
+        /// </summary>
+        public static int HostPort;
+
+
         public static void ApplySettings() {
 
             // Get the folder the program is running in.
@@ -46,6 +58,14 @@ namespace MoDueler {
                     Volume = (float)volume.Value<double>();
                 }
 
+                if (SettingsObject.TryGetValue("HostPort", out var hport)) {
+                    HostPort = hport.Value<int>();
+                }
+
+                if (SettingsObject.TryGetValue("HostAddress", out var haddress)) {
+                    HostAddress = haddress.Value<string>();
+                }
+
                 // Retrieve the folder that files can be found.
                 if (SettingsObject.TryGetValue("ContentDirectory", out var directory)) {
                     string path = directory.Value<string>();
@@ -53,7 +73,6 @@ namespace MoDueler {
                         ContentDirectory = path;
                     else
                         ContentDirectory = System.IO.Path.GetFullPath(System.IO.Path.Combine(folder, path));
-
                     ContentDirectory = directory.Value<string>();
                 }
 

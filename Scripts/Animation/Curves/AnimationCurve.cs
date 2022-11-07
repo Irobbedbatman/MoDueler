@@ -1,4 +1,6 @@
 ﻿using MoDueler.Tools;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +11,7 @@ namespace MoDueler.Animation.Curves {
     /// </summary>
     public enum CurveType {
         /// <summary>
-        /// Curve uses linear interpolatation.
+        /// Curve uses linear interpolation.
         /// </summary>
         Linear,
         /// <summary>
@@ -141,6 +143,33 @@ namespace MoDueler.Animation.Curves {
         /// Get's the key with the highest value from the <see cref="Curve"/>.
         /// </summary>
         public float HighestKey => Curve.Last().Key;
+
+
+        /// <summary>
+        /// Parses an animation token passed to it via the <see cref="CurveConstructor"/>
+        /// <para>Children of the this class should default to using the base to automatically apply time and curve type.</para>
+        /// </summary>
+        /// <param name="factorName">The json key.</param>
+        /// <param name="factorValue">The json value.</param>
+        /// <param name="variableValue">The value that was retrieved from the variables dictionary.</param>
+        /// <param name="time">The time the node is added at.</param>
+        /// <param name="value">THe value the animation will have at the provided time</param>
+        /// <param name="curveType">The <see cref="CurveType"/> used by the curve for this step.</param>
+        public void ParseAnimationToken(string factorName, JToken factorValue, object variableValue, ref float time, ref object value, ref CurveType curveType) {
+            switch (factorName) {
+                // Get the time parameter.
+                case "time":
+                    time = (float)(variableValue ?? factorValue);
+                    break;
+                // Get the curvetype paramater. When provided via a variable a number should be provided.
+                case "curve":
+                    if (variableValue != null)
+                        curveType = (CurveType)variableValue;
+                    else
+                        curveType = ParseCurveType((string)factorValue);
+                    break;
+            }
+        }
 
     }
 }

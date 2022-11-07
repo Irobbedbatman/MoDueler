@@ -13,12 +13,11 @@
     <Reference Include="MoDuel">
       <HintPath>..\MoDuel\MoDuel\bin\Release\MoDuel.dll</HintPath>
     </Reference>
+    <Reference Include="MoDuel.Networking">
+      <HintPath>..\MoDuelNetworking\MoDuelNetworking\bin\Release\MoDuel.Networking.dll</HintPath>
+    </Reference>
     <Reference Include="MoonSharpEnvironment">
       <HintPath>..\MoonSharpEnvironment\MoonSharpEnvironment\bin\Release\MoonSharpEnvironment.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\Nodes\Duel\" />
-    <Folder Include="Scripts\Nodes\Binder\" />
   </ItemGroup>
 </Project>

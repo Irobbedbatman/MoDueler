@@ -11,5 +11,6 @@ namespace MoDueler.Animation.Curves {
         public T Value { get; set; }
         public CurveType CurveType { get; set; }
 
+
     }
 }

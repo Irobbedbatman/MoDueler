@@ -76,9 +76,12 @@ namespace MoDueler.Resources {
         /// <summary>
         /// Looks for a file with the provided name (or key). 
         /// TODO: Fasters search method and other such ideas.
-        /// <para>Returen <c>null</c> if no file was found.</para>
+        /// <para>Returns <c>null</c> if no file was found.</para>
         /// </summary>
         public static string FindFile(string name) {
+            // If the file is found within the game itself it requires the full path.
+            if (name.StartsWith("res://"))
+                return name;
             //If the file's full path is provided we don't neeed to find it. Also would crash.
             if (System.IO.Path.IsPathRooted(name))
                 return name;
@@ -176,6 +179,7 @@ namespace MoDueler.Resources {
             // If Image hasn't been loaded before we load it now.
             var image = new Image();
             var loadok = image.Load(filePath);
+
             if (loadok == Error.Ok) {
                 // Add the image to the dictionary so we don't need to load it again.
                 if (LoadedImages.ContainsKey(filePath))
@@ -194,6 +198,7 @@ namespace MoDueler.Resources {
         /// <summary>
         /// Constructs a <see cref="Texture"/> from the provided <see cref="Image"/>.
         /// <para>Uses <see cref="CreatedTextures"/> to only ever create one.</para>
+        /// <para>To create a unique texture use <see cref="NewTexFromImage(Image)"/>.</para>
         /// </summary>
         public static Texture TexFromImage(Image image) {
 
@@ -206,7 +211,10 @@ namespace MoDueler.Resources {
                 return CreatedTextures[image];
 
             var tex = new ImageTexture();
-            tex.CreateFromImage(image, (uint)(Texture.FlagsEnum.AnisotropicFilter | Texture.FlagsEnum.Default | Texture.FlagsEnum.Filter));
+
+            // TODO: Optional Texture Flags
+
+            tex.CreateFromImage(image, (uint)(Texture.FlagsEnum.AnisotropicFilter | Texture.FlagsEnum.Mipmaps));
 
             CreatedTextures.Add(image, tex);
 
@@ -219,6 +227,9 @@ namespace MoDueler.Resources {
         /// </summary>
         public static Texture NewTexFromImage(Image image) {
             var tex = new ImageTexture();
+            // If a image wasn't provided we return a blank texture.
+            if (image == null)
+                return tex; 
             tex.CreateFromImage(image, (uint)(Texture.FlagsEnum.AnisotropicFilter | Texture.FlagsEnum.Default | Texture.FlagsEnum.Filter));
             return tex;
         }
@@ -242,6 +253,48 @@ namespace MoDueler.Resources {
                 return new ShaderMaterial() { Shader = shader };
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Adapter to allow <see cref="Texture"/>s and <see cref="Image"/>s as the same paramter.
+        /// <para>Convertes provided <see cref="Image"/>s to <see cref="Texture"/>s using <see cref="TexFromImage(Image)"/>.</para>
+        /// </summary>
+        /// <param name="texOrImg">A texture or an image to be converted to a texture.</param>
+        /// <returns>The result of <paramref name="texOrImg"/>.</returns>
+        public static Texture TextureAdapter(object texOrImg) {
+            if (texOrImg is Texture tex)
+                return tex;
+            else if (texOrImg is Image img)
+                return TexFromImage(img);
+            return null;
+        }
+
+        /// <summary>
+        /// Adapter to allow <see cref="Material"/>s and <see cref="Shader"/>s as the same paramter.
+        /// <para>Convertes provided <see cref="Material"/>s to <see cref="Shader"/>s using <see cref="MaterialFromShader(Shader)"/>.</para>
+        /// </summary>
+        /// <param name="matOrShader">A material or a shader to be converted to a material.</param>
+        /// <returns>The result of <paramref name="matOrShader"/>.</returns>
+        public static Material MaterialAdapter(object matOrShader) {
+            if (matOrShader is Material mat)
+                return mat;
+            else if (matOrShader is Shader shader)
+                return MaterialFromShader(shader);
+            return null;
+        }
+
+        /// <summary>
+        /// Adapter to allow texture and images together and/or materials and shader together.
+        /// <para>Providing an <see cref="Image"/> in <paramref name="texOrImg"/> will be converted to <see cref="Texture"/>s.</para>
+        /// <para>Providing a <see cref="Shader"/> in <paramref name="matOrShader"/> will be converted to <see cref="ShaderMaterial"/>s.</para>
+        /// </summary>
+        /// <param name="texOrImg">A texture or an image to be converted to a texture.</param>
+        /// <param name="matOrShader">A material or a shader to be converted to a material.</param>
+        /// <param name="texture">The result of <paramref name="texOrImg"/>.</param>
+        /// <param name="material">The result fo <paramref name="matOrShader"/>.</param>
+        public static void TextureAndMaterialAdapter(object texOrImg, object matOrShader, out Texture texture, out Material material) {
+            texture = TextureAdapter(texOrImg);
+            material = MaterialAdapter(matOrShader);
         }
     }
 }

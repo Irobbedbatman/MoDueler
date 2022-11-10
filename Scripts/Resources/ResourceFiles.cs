@@ -31,19 +31,11 @@ namespace MoDueler.Resources {
             get {
                 if (_fallBackImage != null)
                     return _fallBackImage;
-                var image = new Image();
-                if (!TryFindFile(GlobalSettings.FallBackImageName, out var img)) {
-                    _fallBackImage = new Image(); //To stop loading each time if the fallback cant be found we just give it a blank image.
-                    return _fallBackImage;
-                }
-                var loadok = image.Load(img);
-                if (loadok == Error.Ok) {
-                    _fallBackImage = image;
-                }
-                else {
-                    _fallBackImage = new Image(); //To stop loading each time if the fallback cant be found we just give it a blank image.
-                }
+
+                // Fallback image stored in local res directory.
+                _fallBackImage = LoadImage("res://FileNotFoundFallback.png");
                 return _fallBackImage;
+
             }
         }
 

@@ -18,7 +18,7 @@ namespace MoDueler {
         // The list of all cards the player has.
         public static object CardCollection;
         // The hero the player is using.
-        public static string CurrentHeroId = "Godette";
+        public static string CurrentHeroId = "HoodedFigure";
         // TODO: Use deck instead of just names.
         public static string[] DeckCardNames;
         // TODO: Derive mana from deck.
@@ -34,7 +34,7 @@ namespace MoDueler {
                 UserId = userId.Value<string>();
             }
 
-            if (settings.TryGetValue("HeroId", out var heroId)) {
+            if (settings.TryGetValue("HeroID", out var heroId)) {
                 CurrentHeroId = heroId.Value<string>();
             }
 
